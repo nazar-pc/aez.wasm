@@ -6,21 +6,25 @@
  * @license   MIT License, see license.txt
  */
 (function(){
-  var lib, encrypt, decrypt, test;
+  var lib, encrypt, decrypt, randombytes, test;
   lib = require('..');
   encrypt = lib.encrypt, decrypt = lib.decrypt;
+  randombytes = require('crypto').randomBytes;
   test = require('tape');
   lib.ready(function(){
-    test('Basic usage', function(t){
+    var plaintexts, ads, nonces, key, ciphertext_expansions, i$, len$;
+    test('Basic usage: known plaintext and ciphertext', function(t){
       var plaintext, ad, nonce, key, ciphertext_expansion, known_ciphertext, ciphertext, plaintext_decrypted;
-      t.plan(4);
+      t.plan(5);
       plaintext = Buffer.from('37c8f1a1c981c04263769feb059be120', 'hex');
       ad = Buffer.from('38e7de89bfabf8b4064118449633e2adb942c22b63c9c0971d19d6845dedd9a0', 'hex');
       nonce = Buffer.from('54d3b0f09e55592d449c5117', 'hex');
       key = Buffer.from('ead50aed64ee3bd8925b7fbbbe619cdf803cbcf386fccce48ea6b921c36efdb821e47fe3fbdf1a0a90e36d29467797ea', 'hex');
       ciphertext_expansion = 16;
       known_ciphertext = Buffer.from('e2c59b7c345587ab28af6876b494d4de7a60eba31da20fd44c6e7b6084193efa', 'hex');
-      ciphertext = encrypt(plaintext, ad, nonce, key, ciphertext_expansion);
+      t.doesNotThrow(function(){
+        ciphertext = encrypt(plaintext, ad, nonce, key, ciphertext_expansion);
+      }, 'Encrypted successfully');
       t.equal(known_ciphertext.join(','), ciphertext.join(','), 'Encrypted correctly');
       t.doesNotThrow(function(){
         plaintext_decrypted = decrypt(ciphertext, ad, nonce, key, ciphertext_expansion);
@@ -30,5 +34,54 @@
         decrypt(ciphertext, Uint8Array.of(1, 2, 3), nonce, key, ciphertext_expansion);
       }, Error, 'Decryption fails as expected');
     });
+    plaintexts = [randombytes(16), new Uint8Array(0)];
+    ads = [randombytes(32), new Uint8Array(0)];
+    nonces = [randombytes(12), new Uint8Array(0)];
+    key = randombytes(48);
+    ciphertext_expansions = [16, 0];
+    for (i$ = 0, len$ = plaintexts.length; i$ < len$; ++i$) {
+      (fn$.call(this, plaintexts[i$]));
+    }
+    function fn$(plaintext){
+      var i$, ref$, len$;
+      for (i$ = 0, len$ = (ref$ = ads).length; i$ < len$; ++i$) {
+        (fn$.call(this, ref$[i$]));
+      }
+      function fn$(ad){
+        var i$, ref$, len$;
+        for (i$ = 0, len$ = (ref$ = nonces).length; i$ < len$; ++i$) {
+          (fn$.call(this, ref$[i$]));
+        }
+        function fn$(nonce){
+          var i$, ref$, len$;
+          for (i$ = 0, len$ = (ref$ = ciphertext_expansions).length; i$ < len$; ++i$) {
+            (fn$.call(this, ref$[i$]));
+          }
+          function fn$(ciphertext_expansion){
+            var title;
+            if (!plaintext.length && !ciphertext_expansion) {
+              return;
+            }
+            title = "plaintext length " + plaintext.length + ", ad length " + ad.length + ", nonce length " + nonce.length + ", ciphertext expansion " + ciphertext_expansion;
+            test("Basic usage: " + title, function(t){
+              var ciphertext, plaintext_decrypted;
+              t.doesNotThrow(function(){
+                ciphertext = encrypt(plaintext, ad, nonce, key, ciphertext_expansion);
+              }, 'Encrypted successfully');
+              t.doesNotThrow(function(){
+                plaintext_decrypted = decrypt(ciphertext, ad, nonce, key, ciphertext_expansion);
+              }, 'Decrypted successfully');
+              t.equal(plaintext_decrypted.join(','), plaintext.join(','), 'Decrypted correctly');
+              if (ciphertext_expansion) {
+                t.throws(function(){
+                  decrypt(ciphertext, Uint8Array.of(1, 2, 3), nonce, key, ciphertext_expansion);
+                }, Error, 'Decryption fails as expected');
+              }
+              t.end();
+            });
+          }
+        }
+      }
+    }
   });
 }).call(this);

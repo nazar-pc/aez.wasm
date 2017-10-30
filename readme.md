@@ -7,8 +7,10 @@ NOTE from C implementation:
 // ** Do not use for any purpose other than to understand AEZ.      **
 ```
 
-## Current status
-Library is under development, can already be used for experiments
+## How to install
+```
+npm install aez.wasm
+```
 
 ## How to use
 NOTE: In modern versions of Node.js (4.x and higher) `Buffer` inherits `Uint8Array`, so you can pass `Buffer` directly whenever `Uint8Array` is expected.
@@ -51,7 +53,7 @@ requirejs(['aez.wasm'], function (aez) {
 * `callback` - Callback function that is called WebAssembly is loaded and library is ready for use
 
 ### aez.encrypt(plaintext : Uint8Array, ad : Uint8Array, nonce : Uint8Array, key : Uint8Array, ciphertext_expansion : number) : Uint8Array
-Encrypts `plaintext`, returns ciphertext.
+Encrypts `plaintext`, returns ciphertext. Will throw `Error` if encryption fails.
 
 * `plaintext` - Arbitrary size plaintext
 * `ad` - Arbitrary size associated data

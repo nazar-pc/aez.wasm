@@ -1,8 +1,16 @@
 {
 	"name"            : "aez.wasm",
-	"description"     : "",
-	"keywords"        : [],
-	"version"         : "",
+	"description"     : " AEZ cipher compiled to WebAssembly using Emscripten and optimized for small size ",
+	"keywords"        : [
+		"aez",
+		"encryption",
+		"block",
+		"cipher",
+		"webassembly",
+		"wasm",
+		"emscripten"
+	],
+	"version"         : "0.1.0",
 	"homepage"        : "https://github.com/nazar-pc/aez.wasm",
 	"author"          : {
 		"name"  : "Nazar Mokrynskyi",

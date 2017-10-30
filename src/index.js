@@ -15,30 +15,47 @@
   };
   allocate = lib.allocateBytes;
   /**
-   * @param {!Uint8Array}	plaintext				Arbitrary size plaintext
-   * @param {!Uint8Array}	ad						Arbitrary size associated data
-   * @param {!Uint8Array}	nonce					Arbitrary size nonce
+   * @param {Uint8Array} data
+   *
+   * @return {!Array}
+   */
+  function allocate_if_not_empty(data){
+    if (data && data.length) {
+      return [data.length, allocate(0, data)];
+    } else {
+      return [0, null];
+    }
+  }
+  /**
+   * @param {Uint8Array}	plaintext				Arbitrary size plaintext
+   * @param {Uint8Array}	ad						Arbitrary size associated data
+   * @param {Uint8Array}	nonce					Arbitrary size nonce
    * @param {!Uint8Array}	key						Arbitrary size key
    * @param {number}		ciphertext_expansion	How much longer ciphertext must be comparing to plaintext (read AEZ paper for details)
    *
    * @return {!Uint8Array} Ciphertext
+   *
+   * @throws {Error}
    */
   function encrypt(plaintext, ad, nonce, key, ciphertext_expansion){
-    var ciphertext;
-    ciphertext = allocate(plaintext.length + ciphertext_expansion);
-    plaintext = allocate(0, plaintext);
-    ad = allocate(0, ad);
-    nonce = allocate(0, nonce);
+    var ref$, plaintext_length, ad_length, nonce_length, ciphertext;
+    ref$ = allocate_if_not_empty(plaintext), plaintext_length = ref$[0], plaintext = ref$[1];
+    ref$ = allocate_if_not_empty(ad), ad_length = ref$[0], ad = ref$[1];
+    ref$ = allocate_if_not_empty(nonce), nonce_length = ref$[0], nonce = ref$[1];
     key = allocate(0, key);
-    lib._aez_encrypt(ciphertext, plaintext, plaintext.length, ad, ad.length, nonce, nonce.length, key, key.length, ciphertext_expansion);
+    if (plaintext_length + ciphertext_expansion === 0) {
+      throw new Error("Can't encrypt empty plaintext without ciphertext expansion");
+    }
+    ciphertext = allocate(plaintext_length + ciphertext_expansion);
+    lib._aez_encrypt(ciphertext, plaintext, plaintext_length, ad, ad_length, nonce, nonce_length, key, key.length, ciphertext_expansion);
     ciphertext = ciphertext.get();
     lib.freeBytes();
     return ciphertext;
   }
   /**
    * @param {!Uint8Array}	ciphertext				Ciphertext
-   * @param {!Uint8Array}	ad						Arbitrary size associated data
-   * @param {!Uint8Array}	nonce					Arbitrary size nonce
+   * @param {Uint8Array}	ad						Arbitrary size associated data
+   * @param {Uint8Array}	nonce					Arbitrary size nonce
    * @param {!Uint8Array}	key						Arbitrary size key
    * @param {number}		ciphertext_expansion	How much shorter plaintext must be comparing to ciphertext (read AEZ paper for details)
    *
@@ -47,19 +64,28 @@
    * @throws {Error}
    */
   function decrypt(ciphertext, ad, nonce, key, ciphertext_expansion){
-    var plaintext, result;
-    plaintext = allocate(ciphertext.length - ciphertext_expansion);
-    ciphertext = allocate(0, ciphertext);
-    ad = allocate(0, ad);
-    nonce = allocate(0, nonce);
+    var ref$, ciphertext_length, ad_length, nonce_length, plaintext, result;
+    ref$ = allocate_if_not_empty(ciphertext), ciphertext_length = ref$[0], ciphertext = ref$[1];
+    ref$ = allocate_if_not_empty(ad), ad_length = ref$[0], ad = ref$[1];
+    ref$ = allocate_if_not_empty(nonce), nonce_length = ref$[0], nonce = ref$[1];
     key = allocate(0, key);
-    result = lib._aez_decrypt(plaintext, ciphertext, ciphertext.length, ad, ad.length, nonce, nonce.length, key, key.length, ciphertext_expansion);
+    if (ciphertext_length - ciphertext_expansion > 0) {
+      plaintext = allocate(ciphertext_length - ciphertext_expansion);
+    } else {
+      plaintext = null;
+    }
+    result = lib._aez_decrypt(plaintext, ciphertext, ciphertext_length, ad, ad_length, nonce, nonce_length, key, key.length, ciphertext_expansion);
     if (result !== 0) {
       lib.freeBytes();
       throw new Error('Decryption failed');
     }
-    plaintext = plaintext.get();
-    lib.freeBytes();
-    return plaintext;
+    if (plaintext) {
+      plaintext = plaintext.get();
+      lib.freeBytes();
+      return plaintext;
+    } else {
+      lib.freeBytes();
+      return new Uint8Array(0);
+    }
   }
 }).call(this);

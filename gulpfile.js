@@ -35,7 +35,7 @@
       callback(error);
     });
   }).task('browserify', ['clean', 'wasm'], function(){
-    return gulp.src('index.js', {
+    return gulp.src('src/index.js', {
       read: false
     }).pipe(tap(function(file){
       file.contents = browserify({

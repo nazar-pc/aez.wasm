@@ -41,7 +41,7 @@ gulp
 		)
 	)
 	.task('browserify', ['clean', 'wasm'], ->
-		gulp.src('index.js', {read: false})
+		gulp.src('src/index.js', {read: false})
 			.pipe(tap(
 				(file) !->
 					file.contents	=
