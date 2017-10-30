@@ -6,6 +6,8 @@
  */
 lib	= require('../aez')()
 
+#TODO: allow empty nonce and ad
+
 module.exports = {ready : lib.then, encrypt, decrypt}
 
 allocate	= lib.allocateBytes
@@ -14,7 +16,7 @@ allocate	= lib.allocateBytes
  * @param {!Uint8Array}	plaintext				Arbitrary size plaintext
  * @param {!Uint8Array}	ad						Arbitrary size associated data
  * @param {!Uint8Array}	nonce					Arbitrary size nonce
- * @param {!Uint8Array}	key						Arbitrary size nonce
+ * @param {!Uint8Array}	key						Arbitrary size key
  * @param {number}		ciphertext_expansion	How much longer ciphertext must be comparing to plaintext (read AEZ paper for details)
  *
  * @return {!Uint8Array} Ciphertext
@@ -41,7 +43,7 @@ function encrypt (plaintext, ad, nonce, key, ciphertext_expansion)
  * @param {!Uint8Array}	ciphertext				Ciphertext
  * @param {!Uint8Array}	ad						Arbitrary size associated data
  * @param {!Uint8Array}	nonce					Arbitrary size nonce
- * @param {!Uint8Array}	key						Arbitrary size nonce
+ * @param {!Uint8Array}	key						Arbitrary size key
  * @param {number}		ciphertext_expansion	How much shorter plaintext must be comparing to ciphertext (read AEZ paper for details)
  *
  * @return {!Uint8Array} Plaintext

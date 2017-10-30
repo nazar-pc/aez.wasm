@@ -18,7 +18,7 @@
    * @param {!Uint8Array}	plaintext				Arbitrary size plaintext
    * @param {!Uint8Array}	ad						Arbitrary size associated data
    * @param {!Uint8Array}	nonce					Arbitrary size nonce
-   * @param {!Uint8Array}	key						Arbitrary size nonce
+   * @param {!Uint8Array}	key						Arbitrary size key
    * @param {number}		ciphertext_expansion	How much longer ciphertext must be comparing to plaintext (read AEZ paper for details)
    *
    * @return {!Uint8Array} Ciphertext
@@ -39,7 +39,7 @@
    * @param {!Uint8Array}	ciphertext				Ciphertext
    * @param {!Uint8Array}	ad						Arbitrary size associated data
    * @param {!Uint8Array}	nonce					Arbitrary size nonce
-   * @param {!Uint8Array}	key						Arbitrary size nonce
+   * @param {!Uint8Array}	key						Arbitrary size key
    * @param {number}		ciphertext_expansion	How much shorter plaintext must be comparing to ciphertext (read AEZ paper for details)
    *
    * @return {!Uint8Array} Plaintext

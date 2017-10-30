@@ -6,10 +6,9 @@
  * @license   MIT License, see license.txt
  */
 (function(){
-  var lib, encrypt, decrypt, randombytes, test;
+  var lib, encrypt, decrypt, test;
   lib = require('..');
   encrypt = lib.encrypt, decrypt = lib.decrypt;
-  randombytes = require('crypto').randomBytes;
   test = require('tape');
   lib.ready(function(){
     test('Basic usage', function(t){

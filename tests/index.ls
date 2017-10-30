@@ -6,7 +6,6 @@
  */
 lib					= require('..')
 {encrypt, decrypt}	= lib
-randombytes			= require('crypto').randomBytes
 test				= require('tape')
 
 <-! lib.ready
