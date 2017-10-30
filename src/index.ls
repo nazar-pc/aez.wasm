@@ -54,7 +54,7 @@ function decrypt (ciphertext, ad, nonce, key, ciphertext_expansion)
 	ad			= allocate(0, ad)
 	nonce		= allocate(0, nonce)
 	key			= allocate(0, key)
-	result		= lib._aez_encrypt(
+	result		= lib._aez_decrypt(
 		plaintext,
 		ciphertext, ciphertext.length,
 		ad, ad.length,

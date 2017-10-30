@@ -53,7 +53,7 @@
     ad = allocate(0, ad);
     nonce = allocate(0, nonce);
     key = allocate(0, key);
-    result = lib._aez_encrypt(plaintext, ciphertext, ciphertext.length, ad, ad.length, nonce, nonce.length, key, key.length, ciphertext_expansion);
+    result = lib._aez_decrypt(plaintext, ciphertext, ciphertext.length, ad, ad.length, nonce, nonce.length, key, key.length, ciphertext_expansion);
     if (result !== 0) {
       lib.freeBytes();
       throw new Error('Decryption failed');
