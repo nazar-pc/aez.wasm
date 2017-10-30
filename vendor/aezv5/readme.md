@@ -1,0 +1,1 @@
+Source code of AEZ v5 implementation copied from [AEZ web page](http://web.cs.ucdavis.edu/~rogaway/aez/), copy of original ZIP file is also included just in case.

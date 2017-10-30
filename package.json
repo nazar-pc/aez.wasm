@@ -1,0 +1,48 @@
+{
+	"name"            : "aez.wasm",
+	"description"     : "",
+	"keywords"        : [],
+	"version"         : "",
+	"homepage"        : "https://github.com/nazar-pc/aez.wasm",
+	"author"          : {
+		"name"  : "Nazar Mokrynskyi",
+		"email" : "nazar@mokrynskyi.com",
+		"url"   : "https://cleverstyle.org"
+	},
+	"repository"      : {
+		"type" : "git",
+		"url"  : "git://github.com/nazar-pc/aez.wasm.git"
+	},
+	"licenses"        : [
+		{
+			"type" : "MIT",
+			"url"  : "https://github.com/nazar-pc/aez.wasm/blob/master/license.txt"
+		}
+	],
+	"bugs"            : "https://github.com/nazar-pc/aez.wasm/issues",
+	"docs"            : "https://github.com/nazar-pc/aez.wasm",
+	"main"            : "src/index.js",
+	"files"           : [
+		"dist",
+		"src",
+		"aez.js",
+		"aez.wasm"
+	],
+	"scripts"         : {
+		"test"  : "tape test/**/*.js",
+		"build" : "gulp build"
+	},
+	"devDependencies" : {
+		"browserify"  : "^14.4.0",
+		"del"         : "^3.0.0",
+		"glob"        : "^7.1.2",
+		"gulp"        : "^3.9.1",
+		"gulp-rename" : "^1.2.2",
+		"gulp-tap"    : "^1.0.1",
+		"gulp-uglify" : "^3.0.0",
+		"tape"        : "^4.7.0"
+	},
+	"jspm"            : {
+		"main" : "dist/aez.wasm.browser.js"
+	}
+}
