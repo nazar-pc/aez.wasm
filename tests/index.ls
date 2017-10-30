@@ -10,7 +10,7 @@ test				= require('tape')
 
 <-! lib.ready
 test('Basic usage', (t) !->
-	t.plan(3)
+	t.plan(4)
 
 	plaintext				= Buffer.from('37c8f1a1c981c04263769feb059be120', 'hex')
 	ad						= Buffer.from('38e7de89bfabf8b4064118449633e2adb942c22b63c9c0971d19d6845dedd9a0', 'hex')
@@ -28,4 +28,8 @@ test('Basic usage', (t) !->
 	), 'Decrypted successfully'
 
 	t.equal(plaintext_decrypted.join(','), plaintext.join(','), 'Decrypted correctly')
+
+	t.throws (!->
+		decrypt(ciphertext, Uint8Array.of(1, 2, 3), nonce, key, ciphertext_expansion)
+	), Error, 'Decryption fails as expected'
 )
