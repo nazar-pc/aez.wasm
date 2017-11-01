@@ -50,7 +50,7 @@ requirejs(['aez.wasm'], function (aez) {
 
 # API
 ### aez.ready(callback)
-* `callback` - Callback function that is called WebAssembly is loaded and library is ready for use
+* `callback` - Callback function that is called when WebAssembly is loaded and library is ready for use
 
 ### aez.encrypt(plaintext : Uint8Array, ad : Uint8Array, nonce : Uint8Array, key : Uint8Array, ciphertext_expansion : number) : Uint8Array
 Encrypts `plaintext`, returns ciphertext. Will throw `Error` if encryption fails.
