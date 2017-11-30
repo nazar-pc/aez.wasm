@@ -1,4 +1,4 @@
-# aez.wasm
+# aez.wasm [![Travis CI](https://img.shields.io/travis/nazar-pc/aez.wasm/master.svg?label=Travis%20CI)](https://travis-ci.org/nazar-pc/aez.wasm)
 [AEZ cipher](http://web.cs.ucdavis.edu/~rogaway/aez/) compiled to WebAssembly using Emscripten and optimized for small size
 
 NOTE from C implementation:
