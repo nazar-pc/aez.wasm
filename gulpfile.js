@@ -16,7 +16,7 @@
     functions = JSON.stringify(['_malloc', '_free', '_aez_encrypt', '_aez_decrypt']);
     optimize = "-Oz --llvm-lto 1 --closure 1 -s NO_EXIT_RUNTIME=1 -s NO_FILESYSTEM=1 -s EXPORTED_RUNTIME_METHODS=[] -s DEFAULT_LIBRARY_FUNCS_TO_INCLUDE=[]";
     clang_opts = "-I src";
-    command = "EMMAKEN_CFLAGS='" + clang_opts + "' python3 /home/nazar-pc/bin/emcc_dev src/aez.c --post-js src/bytes_allocation.js -o src/aez.js -s MODULARIZE=1 -s 'EXPORT_NAME=\"__aez_wasm\"' -s EXPORTED_FUNCTIONS='" + functions + "' -s WASM=1 " + optimize;
+    command = "EMMAKEN_CFLAGS='" + clang_opts + "' emcc src/aez.c --post-js src/bytes_allocation.js -o src/aez.js -s MODULARIZE=1 -s 'EXPORT_NAME=\"__aez_wasm\"' -s EXPORTED_FUNCTIONS='" + functions + "' -s WASM=1 " + optimize;
     exec(command, function(error, stdout, stderr){
       if (stdout) {
         console.log(stdout);
