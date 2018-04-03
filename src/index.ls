@@ -37,6 +37,7 @@ function Wrapper (lib)
 		[nonce_length, nonce]			= allocate_if_not_empty(nonce)
 		key								= allocate(0, key)
 		if (plaintext_length + ciphertext_expansion) == 0
+			free()
 			throw new Error("Can't encrypt empty plaintext without ciphertext expansion")
 		ciphertext						= allocate(plaintext_length + ciphertext_expansion)
 		lib._aez_encrypt(
